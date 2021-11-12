@@ -1,0 +1,10 @@
+dynamodb:
+    # If you only want to use DynamoDB Local in some stages, declare them here
+    stages:
+        - dev
+    start:
+        port: 8000
+        migrate: false
+        seed: false
+        convertEmptyValues: true
+        noStart: true

@@ -1,0 +1,27 @@
+Resources:
+    usersTable:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: user
+            AttributeDefinitions:
+                - AttributeName: pk
+                  AttributeType: S
+                - AttributeName: email
+                  AttributeType: S
+
+            KeySchema:
+                - AttributeName: pk
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: 1
+                WriteCapacityUnits: 1
+            GlobalSecondaryIndexes:
+                - IndexName: emailIndex
+                  KeySchema:
+                      - AttributeName: email
+                        KeyType: HASH
+                  Projection:
+                      ProjectionType: ALL
+                  ProvisionedThroughput:
+                      ReadCapacityUnits: 1
+                      WriteCapacityUnits: 1

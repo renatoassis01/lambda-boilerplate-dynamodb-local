@@ -1,0 +1,31 @@
+service: lambda
+
+frameworkVersion: '>=2.3.0'
+
+custom: ${file(./dynamodb/config.yaml)}
+
+provider:
+    name: aws
+    region: us-east-1
+    runtime: nodejs14.x
+
+functions:
+    create:
+        handler: src/index.create
+        events:
+            - httpApi:
+                  path: /
+                  method: post
+    getAll:
+        handler: src/index.getAll
+        events:
+            - httpApi:
+                  path: /
+                  method: get
+
+resources: ${file(./dynamodb/resources.yaml)}
+
+plugins:
+    - serverless-offline
+    - serverless-plugin-typescript
+    - serverless-dynamodb-local

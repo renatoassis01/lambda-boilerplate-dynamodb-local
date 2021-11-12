@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "preserveConstEnums": true,
+        "strictNullChecks": true,
+        "esModuleInterop": true,
+        "module": "CommonJS",
+        "sourceMap": true,
+        "allowJs": true,
+        "target": "ES2020",
+        "outDir": ".build", //options cannot be overwritten.
+        "moduleResolution": "node",
+        "lib": ["es2017", "ESNext"],
+        "rootDir": "./" //options cannot be overwritten.
+    }
+}
