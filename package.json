@@ -22,6 +22,10 @@
     "keywords": [],
     "author": "Renato Assis",
     "license": "ISC",
+    "dependencies": {
+        "aws-sdk": "^2.1027.0",
+        "nanoid": "^3.1.30"
+    },
     "devDependencies": {
         "@ava/typescript": "^3.0.0",
         "@types/aws-lambda": "^8.10.85",
@@ -73,9 +77,5 @@
             "test",
             "build"
         ]
-    },
-    "dependencies": {
-        "aws-sdk": "^2.1027.0",
-        "nanoid": "^3.1.30"
     }
 }
