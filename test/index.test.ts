@@ -1,21 +1,52 @@
 import test from 'ava';
+import sinon from 'sinon';
 import lambdaTester = require('lambda-tester');
-import { handler, handler2 } from '../src/index';
+import { create, getAll } from '../src/index';
+import * as dynamoDb from '../src/dynamodb';
 
-test('test for lambda handler', async t => {
-    await lambdaTester(handler)
-        .event({})
+test.afterEach.always(() => {
+    sinon.restore();
+});
+
+test('test for create', async t => {
+    const createStub = sinon.stub(dynamoDb, 'create').resolves();
+
+    const event = {
+        body: {
+            name: 'name',
+            email: 'email@email.com',
+        },
+    };
+
+    await lambdaTester(create)
+        .event(event)
         .expectResult(result => {
             t.is(result.statusCode, 200);
-            t.not(result.body, undefined);
+            t.not(result.body, { message: 'ok' });
         });
+
+    t.true(createStub.calledWith(<any>event));
 });
 
 test('test for lambda handler2', async t => {
-    await lambdaTester(handler2)
-        .event({ body: { hello: 'world' } })
+    const resultMock = [
+        {
+            name: 'name',
+            created_at: '2021-11-27T15:10:41.770Z',
+            pk: 'lCqlNkYbkU-7_478uCRSf',
+            email: 'email@company.com.br',
+        },
+    ];
+    const getAllStub = sinon
+        .stub(dynamoDb, 'getAll')
+        .resolves(<any>{ data: resultMock, count: 1 });
+
+    await lambdaTester(getAll)
+        .event({})
         .expectResult(result => {
             t.is(result.statusCode, 200);
-            t.deepEqual(result.body, { hello: 'world' });
+            t.deepEqual(result.body, JSON.stringify({ data: resultMock, count: 1 }));
         });
+
+    t.true(getAllStub.called);
 });
