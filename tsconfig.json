@@ -10,6 +10,13 @@
         "outDir": ".build", //options cannot be overwritten.
         "moduleResolution": "node",
         "lib": ["es2017", "ESNext"],
-        "rootDir": "./" //options cannot be overwritten.
+        "rootDir": "./", //options cannot be overwritten.
+        "baseUrl": ".",
+        "paths": {
+            "@lambdas/*": ["./src/index.ts"],
+            "@utils/*": ["./src/utils/*"],
+            "@interfaces/*": ["./src/interfaces/*"],
+            "@aws/*": ["./src/aws/*"]
+        }
     }
 }

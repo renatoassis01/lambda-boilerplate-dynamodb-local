@@ -2,8 +2,8 @@
 import test from 'ava';
 import sinon from 'sinon';
 import lambdaTester = require('lambda-tester');
-import { create, getAll, getByPk } from '../src/index';
-import * as dynamoDb from '../src/dynamodb';
+import { create, getAll, getByPk } from '@lambdas/index';
+import * as dynamoDb from '@aws/dynamodb';
 
 test.afterEach.always(() => {
     sinon.restore();

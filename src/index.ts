@@ -1,6 +1,6 @@
-import * as dynamodb from './dynamodb';
-import { User } from './interfaces/user';
-import { builderResponse } from './utils/builder';
+import { builderResponse } from '@utils/builder';
+import { User } from '@interfaces/user';
+import * as dynamodb from '@aws/dynamodb';
 
 export const create: AWSLambda.Handler = async (
     event: AWSLambda.APIGatewayProxyEvent,

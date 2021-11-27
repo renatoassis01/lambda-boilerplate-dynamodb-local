@@ -1,4 +1,4 @@
-service: lambda
+service: lambda--run-dynamodb-local
 
 frameworkVersion: '>=2.3.0'
 
@@ -35,4 +35,5 @@ resources: ${file(./dynamodb/resources.yaml)}
 plugins:
     - serverless-offline
     - serverless-plugin-typescript
+    - serverless-tscpaths
     - serverless-dynamodb-local

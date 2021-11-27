@@ -47,8 +47,10 @@
         "serverless-dynamodb-local": "^0.2.40",
         "serverless-offline": "^8.2.0",
         "serverless-plugin-typescript": "^2.1.0",
+        "serverless-tscpaths": "^0.0.5",
         "sinon": "^12.0.1",
         "ts-node": "^10.4.0",
+        "tsconfig-paths": "^3.12.0",
         "typescript": "^4.4.4"
     },
     "ava": {
@@ -60,7 +62,8 @@
             "ts"
         ],
         "require": [
-            "ts-node/register"
+            "ts-node/register",
+            "tsconfig-paths/register"
         ]
     },
     "pre-commit": "format:staged",

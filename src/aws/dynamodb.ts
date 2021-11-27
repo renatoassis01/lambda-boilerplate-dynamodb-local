@@ -1,7 +1,7 @@
 import AWS = require('aws-sdk');
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import namoid from 'nanoid';
-import { User } from './interfaces/user';
+import { User } from '@interfaces/user';
 
 const getTableName = (): string => {
     return process.env.DYNAMO_TABLE || 'user';

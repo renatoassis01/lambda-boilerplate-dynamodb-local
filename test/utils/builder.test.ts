@@ -1,5 +1,5 @@
 import test from 'ava';
-import { builderResponse } from '../../src/utils/builder';
+import { builderResponse } from '@utils/builder';
 
 test('test for builderResponse', t => {
     const expectResult = {
