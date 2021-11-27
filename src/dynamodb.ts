@@ -1,4 +1,5 @@
 import AWS = require('aws-sdk');
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import namoid from 'nanoid';
 import { User } from './interfaces/user';
 
@@ -18,7 +19,7 @@ export const create = async (
 
     const body: User = JSON.parse(event.body);
 
-    const params = {
+    const params: DocumentClient.Put = {
         TableName: getTableName(),
         Item: {
             pk: namoid.nanoid(),
@@ -32,10 +33,10 @@ export const create = async (
 };
 
 export const getAll = async (): Promise<User[]> => {
-    const params = {
+    const params: DocumentClient.ScanInput = {
         TableName: getTableName(),
     };
-    const data = await dynamoDb.scan(params).promise();
+    const { Items: data } = await dynamoDb.scan(params).promise();
 
-    return data.Items as User[];
+    return data as User[];
 };
