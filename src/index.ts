@@ -16,5 +16,5 @@ export const getAll: AWSLambda.Handler = async (
     callback: AWSLambda.Callback,
 ): Promise<void> => {
     const result = await dynamodb.getAll();
-    callback(null, builderResponse(200, { data: result }));
+    callback(null, builderResponse(200, result));
 };

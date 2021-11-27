@@ -32,11 +32,11 @@ export const create = async (
     await dynamoDb.put(params).promise();
 };
 
-export const getAll = async (): Promise<User[]> => {
+export const getAll = async (): Promise<{ data: User[]; count: number }> => {
     const params: DocumentClient.ScanInput = {
         TableName: getTableName(),
     };
-    const { Items: data } = await dynamoDb.scan(params).promise();
+    const result = await dynamoDb.scan(params).promise();
 
-    return data as User[];
+    return { data: result.Items as User[], count: result.Count || 0 };
 };
