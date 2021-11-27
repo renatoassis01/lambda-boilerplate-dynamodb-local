@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import test from 'ava';
 import sinon from 'sinon';
 import lambdaTester = require('lambda-tester');
