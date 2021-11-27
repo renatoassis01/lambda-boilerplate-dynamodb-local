@@ -7,6 +7,10 @@ const getTableName = (): string => {
     return process.env.DYNAMO_TABLE || 'user';
 };
 
+export const getISODate = (): string => {
+    return new Date().toISOString();
+};
+
 const dynamoDb = new AWS.DynamoDB.DocumentClient({
     region: process.env.AWS_REGION || 'localhost',
     endpoint: process.env.DYNAMODB_ENDPOINT || 'http://localhost:8000',
@@ -25,7 +29,7 @@ export const create = async (
             pk: namoid.nanoid(),
             name: body.name,
             email: body.email,
-            created_at: new Date().toISOString(),
+            created_at: getISODate(),
         },
     };
 
