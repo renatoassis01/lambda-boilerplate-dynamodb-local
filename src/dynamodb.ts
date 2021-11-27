@@ -40,3 +40,18 @@ export const getAll = async (): Promise<{ data: User[]; count: number }> => {
 
     return { data: result.Items as User[], count: result.Count || 0 };
 };
+
+export const getItemByPk = async (
+    event: AWSLambda.APIGatewayProxyEvent,
+): Promise<User> => {
+    const { pk } = event.pathParameters! || undefined;
+    if (!pk) throw new Error(`pk is required`);
+
+    const params: DocumentClient.Get = {
+        TableName: getTableName(),
+        Key: { pk },
+    };
+    const { Item } = await dynamoDb.get(params).promise();
+
+    return Item as User;
+};

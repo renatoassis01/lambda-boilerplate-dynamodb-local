@@ -23,6 +23,12 @@ functions:
             - httpApi:
                   path: /
                   method: get
+    getByPk:
+        handler: src/index.getByPk
+        events:
+            - httpApi:
+                  path: /{pk}
+                  method: get
 
 resources: ${file(./dynamodb/resources.yaml)}
 

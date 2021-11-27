@@ -1,6 +1,6 @@
-export const builderResponse = (
+export const builderResponse = <T = Record<string, unknown>>(
     statusCode: number,
-    payload: Record<string, unknown>,
+    payload: T,
 ): AWSLambda.ProxyResult => {
     return {
         statusCode,
