@@ -2,6 +2,7 @@ import AWS = require('aws-sdk');
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import namoid from 'nanoid';
 import { User } from '@interfaces/user';
+import { builderUpdateItem } from '../utils/builder';
 
 const getTableName = (): string => {
     return process.env.DYNAMO_TABLE || 'user';
@@ -68,21 +69,11 @@ export const updateByPk = async (
     if (!pk) throw new Error(`pk is required`);
     if (!body) throw new Error(`body is required`);
 
-    const user: User = JSON.parse(body);
+    const item: User = JSON.parse(body);
 
     const params: DocumentClient.UpdateItemInput = {
-        TableName: getTableName(),
-        Key: { pk },
-        UpdateExpression: 'SET #name = :name, email = :email',
-        ExpressionAttributeNames: {
-            '#name': 'name',
-        },
+        ...builderUpdateItem<User>({ pk }, item, getTableName()),
         ConditionExpression: 'pk = :pk',
-        ExpressionAttributeValues: {
-            ':name': user.name,
-            ':email': user.email,
-            ':pk': pk,
-        },
         ReturnValues: 'ALL_NEW',
     };
 
@@ -92,6 +83,7 @@ export const updateByPk = async (
         return Attributes as User;
     } catch (error) {
         if (error.code === 'ConditionalCheckFailedException') return undefined;
+        console.log(error);
         throw new Error(`internal error`);
     }
 };
