@@ -59,3 +59,39 @@ export const getItemByPk = async (
 
     return Item as User;
 };
+
+export const updateByPk = async (
+    event: AWSLambda.APIGatewayProxyEvent,
+): Promise<User | undefined> => {
+    const { pk } = event.pathParameters!;
+    const { body } = event;
+    if (!pk) throw new Error(`pk is required`);
+    if (!body) throw new Error(`body is required`);
+
+    const user: User = JSON.parse(body);
+
+    const params: DocumentClient.UpdateItemInput = {
+        TableName: getTableName(),
+        Key: { pk },
+        UpdateExpression: 'SET #name = :name, email = :email',
+        ExpressionAttributeNames: {
+            '#name': 'name',
+        },
+        ConditionExpression: 'pk = :pk',
+        ExpressionAttributeValues: {
+            ':name': user.name,
+            ':email': user.email,
+            ':pk': pk,
+        },
+        ReturnValues: 'ALL_NEW',
+    };
+
+    try {
+        const result = await dynamoDb.update(params).promise();
+        const { Attributes } = result.$response.data!;
+        return Attributes as User;
+    } catch (error) {
+        if (error.code === 'ConditionalCheckFailedException') return undefined;
+        throw new Error(`internal error`);
+    }
+};

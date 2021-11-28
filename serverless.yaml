@@ -29,6 +29,12 @@ functions:
             - httpApi:
                   path: /{pk}
                   method: get
+    updateByPk:
+        handler: src/index.updateByPk
+        events:
+            - httpApi:
+                  path: /{pk}
+                  method: put
 
 resources: ${file(./dynamodb/resources.yaml)}
 

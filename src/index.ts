@@ -29,3 +29,13 @@ export const getByPk: AWSLambda.Handler = async (
     if (!result) callback(null, builderResponse(404, { message: 'user not found' }));
     callback(null, builderResponse<User>(200, result));
 };
+
+export const updateByPk: AWSLambda.Handler = async (
+    event: AWSLambda.APIGatewayProxyEvent,
+    context: AWSLambda.Context,
+    callback: AWSLambda.Callback,
+): Promise<void> => {
+    const result = await dynamodb.updateByPk(event);
+    if (!result) callback(null, builderResponse(404, { message: 'user not found' }));
+    callback(null, builderResponse<User>(200, result!));
+};
