@@ -1,5 +1,5 @@
 import test from 'ava';
-import { builderResponse } from '@utils/builder';
+import { builderResponse, builderUpdateItem } from '@utils/builder';
 
 test('test for builderResponse', t => {
     const expectResult = {
@@ -14,4 +14,29 @@ test('test for builderResponse', t => {
     const result = builderResponse(200, { message: 'Hello World' });
 
     t.deepEqual(result, expectResult);
+});
+
+test('test for builderUpdateItem', t => {
+    const result = builderUpdateItem(
+        { pk: 'pk' },
+        {
+            name: 'name',
+            email: 'email',
+        },
+        'tableName',
+    );
+
+    const expected = {
+        TableName: 'tableName',
+        Key: { pk: 'pk' },
+        UpdateExpression: 'SET #name = :name, #email = :email',
+        ExpressionAttributeNames: { '#name': 'name', '#email': 'email' },
+        ExpressionAttributeValues: {
+            ':name': 'name',
+            ':email': 'email',
+            ':pk': 'pk',
+        },
+    };
+
+    t.deepEqual(result, expected);
 });

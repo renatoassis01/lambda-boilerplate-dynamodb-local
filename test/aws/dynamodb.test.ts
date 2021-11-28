@@ -103,3 +103,50 @@ test.serial('DynamoDB get CASE 2', async t => {
         message: 'pk is required',
     });
 });
+
+test.serial('DynamoDB update CASE 1', async t => {
+    await t.throwsAsync(() => dynamodb.updateByPk(<any>{ pathParameters: {} }), {
+        message: 'pk is required',
+    });
+});
+
+test.serial('DynamoDB update CASE 2', async t => {
+    await t.throwsAsync(
+        () => dynamodb.updateByPk(<any>{ pathParameters: { pk: 'pk' } }),
+        {
+            message: 'body is required',
+        },
+    );
+});
+
+test.serial.only('DynamoDB update CASE 3', async t => {
+    const updateSpy = sinon
+        .stub(AWS.DynamoDB.DocumentClient.prototype, 'update')
+        .returns(<any>{
+            promise: () => {
+                return Promise.resolve({ $response: { data: { Attributes: {} } } });
+            },
+        });
+
+    const event = {
+        pathParameters: { pk: 'pk' },
+        body: JSON.stringify({
+            name: 'name',
+            email: 'email@email.com',
+        }),
+    };
+
+    await dynamodb.updateByPk(<any>event);
+
+    const expectedParams = {
+        TableName: 'user',
+        Key: { pk: 'pk' },
+        UpdateExpression: 'SET #name = :name, #email = :email',
+        ExpressionAttributeNames: { '#name': 'name', '#email': 'email' },
+        ExpressionAttributeValues: { ':name': 'name', ':email': 'email@email.com' },
+        ConditionExpression: 'pk = :pk',
+        ReturnValues: 'ALL_NEW',
+    };
+
+    t.true(updateSpy.calledWith(expectedParams));
+});
